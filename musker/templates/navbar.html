@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .navbar-brand{
+            font-size: 200%;
+        }
+        .container-fluid{
+            background: #FF416C;
+            background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            background-repeat: no-repeat;
+        }
+        .container-fluid{
+            margin-top: -10px;
+        }
+        .offcanvas-header{
+            background: #FF416C;
+            background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            background-repeat: no-repeat;
+        }
+        .img{
+          object-fit: cover;
+          border-radius: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      
+        .user{
+          max-width: 100%;
+          max-height: 100%;
+          justify-content: center;
+          display: flex;
+          margin-right: 7%;
+        }
+        .username{
+          margin-left: 5%;
+          color: white;
+          display: flex;
+        }
+        .textU{
+          margin-top: 13%;
+        }
+        li {
+          padding: 6px 0;
+        }  
+      
+          a {
+            position: relative;
+            display: block;
+            padding: 4px 0;
+            font-family: Lato, sans-serif;
+            color: black;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.5s;
+           }
+            a::after {
+              position: absolute;
+              content: "";
+              top: 100%;
+              left: 0;
+              width: 100%;
+              height: 3px;
+              background: #FF416C;
+              transform: scaleX(0);
+              transform-origin: right;
+              transition: transform 0.5s;
+            }
+      
+            a:hover {
+              font-weight: bold;
+            }
+      
+            a:hover::after {
+              transform: scaleX(1);
+              transform-origin: left;
+            }
+        
+      </style>
+</head>
+<body>
+    <nav class="navbar bg-body-emphasis fixed-top">
+        <div class="container-fluid" >
+          <a class="navbar-brand" href="{% url 'home' %}" style="color: white; font-weight:bold; font: size 70%; font-family: 'Montserrat', sans-serif;">CoddyBuddy</a>
+          <div class="user">
+            <img class="img" src="{{profile.image.url}}" alt="" >
+            <div class="username"><h5 class="textU">{{currentUser.username}}</h5></div>
+          </div>
+          <button class="navbar-toggler"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" data-bs-theme="light">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <br>
+                <li><a class="dropdown-item" href="{% url 'profile' user.id %}">My Profile</a></li>
+                <br>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Settings
+                  </a>
+                  <ul class="dropdown-menu">
+                    
+                    <li><a class="dropdown-item" href="/editProfile">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'changePassword' %}">Change Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logOut' %}" style="color: red;">Log Out</a></li>
+                  </ul>
+                </li>
+                <br>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Me</a>
+                  </li>
+              </ul>
+             
+            </div>
+          </div>
+        </div>
+      </nav>
+</body>
+</html>
+  

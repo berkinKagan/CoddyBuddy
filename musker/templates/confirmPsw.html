@@ -1,0 +1,5 @@
+{% autoescape off %}
+Hi {{user.username}},
+Please click on the link to confirm your password change,
+http://{{domain}}{% url "confirmPsw" uid token %}
+{% endautoescape %} 

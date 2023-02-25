@@ -1,0 +1,189 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <style>
+      .row{
+        display: flex;
+        margin-top: 20px;
+      }
+      .left{
+        flex: 1;
+      }
+      .middle{
+        flex: 15;
+        height: 100%;
+        
+        
+      }
+      .right{
+        flex: 1;
+        
+        
+      }
+      @property --p{
+        syntax: '<number>';
+        inherits: true;
+        initial-value: 0;
+      }
+      
+      .pie {
+        --p:20;
+        --b:22px;
+        --c:darkred;
+        --w:150px;
+        
+        width:var(--w);
+        aspect-ratio:1;
+        position:relative;
+        display:inline-grid;
+        margin:5px;
+        place-content:center;
+        font-size:25px;
+        font-weight:bold;
+        font-family:sans-serif;
+      }
+      .pie:before,
+      .pie:after {
+        content:"";
+        position:absolute;
+        border-radius:50%;
+      }
+      .pie:before {
+        inset:0;
+        background:
+          radial-gradient(farthest-side,var(--c) 98%,#0000) top/var(--b) var(--b) no-repeat,
+          conic-gradient(var(--c) calc(var(--p)*1%),#0000 0);
+        -webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+                mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+      }
+      .pie:after {
+        inset:calc(50% - var(--b)/2);
+        background:var(--c);
+        transform:rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+      }
+      .animate {
+        animation:p 1s .5s both;
+      }
+      .no-round:before {
+        background-size:0 0,auto;
+      }
+      .no-round:after {
+        content:none;
+      }
+      @keyframes p {
+        from{--p:0}
+      }
+      
+      body {
+        background:#ddd;
+      }
+      .image{
+        margin-top: 30px;
+        border-radius: 100000000px;
+        border: 5px thin #555;
+        display: block;
+        object-fit: cover;
+        height: 200px;
+        width: 200px;
+      }
+      .btn-check{
+        background-color: white;
+        color: #FF4B2B;
+        border-color: #FF4B2B;
+        padding: 2%;
+        border-radius: 10px;
+        transition: 100ms;
+        text-decoration: dotted;
+        width: 50%;
+        font-weight: bold;
+      }
+      .btn-check:hover{
+        background: #FF416C;
+        background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        background-repeat: no-repeat;
+        color: white;
+      }
+      
+      
+      
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <br>
+    <br>
+
+    <div style="margin-top: 20px; height:100%; min-height:50%;" class="container text-center">
+      <div class="row">
+        <div class="left">
+          
+        </div>
+        <div class="middle">
+          <div class="card mb-3" style="">
+            <div class="row g-0">
+              <div class="col-md-4" style="display: flex; flex-direction: column; align-items: center;">
+                <img class="image" style="max-height: 50%; max-width:50%;" src="{{profile.image.url}}" class="img-fluid rounded-start" alt="">
+                <br>
+                <h5 class="card-title">{{currentUser.username}}</h5>
+                  <p class="card-text">{{currentUser.email}}</p>
+                  <p class="card-text"><small class="text-muted">Joined in {{currentUser.date_joined}}</small></p>
+                  <br>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault" ">Follow</label>
+                  </div>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                
+                  <div class="graph">
+                    <div class="pie animate no-round" style="--p:80;--c:red;"> 20%</div>
+                    <p>Problem Solved</p>
+                    <div class="pie animate no-round" style="--p:80;--c:orange;"> 80%</div>
+                    <p>Followers</p>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item" >
+              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background: #FF416C;
+                background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+                background: linear-gradient(to right, #FF4B2B, #FF416C);
+                background-repeat: no-repeat;
+                color: white;">
+                  <p style="color: white; font-weight: bold; margin: 0px;">Biography</p>
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne" ">
+                <div class="accordion-body">
+                  {{profile.bio}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          
+        </div>
+      </div>
+    </div>
+
+    
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>

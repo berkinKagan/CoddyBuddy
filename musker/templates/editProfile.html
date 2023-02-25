@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        .content{
+            display: flex;
+            margin-top: 5%;
+            height: fit-content;
+        }
+        .left{
+            flex: 1;
+        }
+        .middle{
+            flex: 5;
+            border: solid;
+            border-width: thin;
+            border-color: lightgray;
+            padding: 3%;
+            border-radius: 10px;
+        }
+        .right{
+            flex: 1;
+        }
+        .bio{
+            width: 40%;
+            border-width: thin;
+            border-color: lightgray;
+            border-radius: 7px;
+        }
+        .submit{
+            border-color: #FF416C;
+            background-color: white;
+            height: 120%;
+            padding: 0.5%;
+            width: 12%;
+            border-radius: 8px;
+            transition: 100ms;
+            color: #FF416C;
+            font-weight: bold;
+        }
+        .submit:hover{
+            cursor: pointer;
+            background: #FF416C;
+            background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            background-repeat: no-repeat;
+            color: white;
+        }
+    </style>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="content">
+        <div class="left"></div>
+        <div class="middle">
+            <form action="" enctype="multipart/form-data" method="POST" class="row g-3 needs-validation" novalidate style="flex-direction: column; ">
+                {% csrf_token %}
+                <h1>Edit Your Profile</h1>
+                <div class="col-md-4 position-relative" style="flex: 1; width:100%;">
+                  <label for="validationTooltip01" class="form-label">New Username</label>
+                  <input type="text" name="username" class="form-control" id="validationTooltip01" style="width: 40%;" value="{{currentUser.username}}" required>
+                  <div class="valid-tooltip">
+                    Looks good!
+                  </div>
+                </div>
+                <div class="col-md-3 position-relative" style="flex: 1; width:100%;">
+                  <label for="validationTooltip05" class="form-label">Biography</label>
+                  <br>
+                  <textarea class="bio" name="bio" id="" cols="" rows="">{{profile.bio}}</textarea>
+                  <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="validationTooltip05" class="form-label">Profile Photo</label>
+                  <input name="img" style="width: 40%;" type="file" class="form-control" aria-label="file example" required>
+                </div>
+                <div class="col-12" style="flex: 2; width:100%; height:100%">
+                  <button class="submit" type="submit">Submit form</button>
+                </div>
+                <div style="color: red;">{{message}}</div>
+              </form>
+        </div>
+        <div class="right"></div>
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>
