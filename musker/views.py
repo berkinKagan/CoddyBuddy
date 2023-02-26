@@ -8,15 +8,18 @@ from .tokens import account_activation_token, password_change_token
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
-from .models import Post, Profile
+from .models import Post, Profile, TOOL_CHOICES
 from django.http import HttpResponse
 from django.contrib.sessions.middleware import SessionMiddleware
+from django import forms
+
 
 def home(request):
     currentUser = request.user
     profile = Profile.objects.get(user = currentUser)
     Posts = Post.objects.all()
-    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts})
+    choices = TOOL_CHOICES
+    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices})
 
 def logOut(request):
     logout(request)
@@ -159,5 +162,19 @@ def editProfile(request):
             
     return render(request, "editProfile.html",{"currentUser" : currentUser, "message" : message, "profile" : profile})
 
-def createPost(request):    
-    return
+def createPost(request):
+    newpost = None
+    currentUser = request.user
+    if request.method == "POST":
+      postTitle = request.POST.get('postTitle')
+      answer = request.POST['tool']
+      description = request.POST.get('description')
+      numberOfMember = request.POST.get('numberOfMember')
+      
+      if(postTitle != None and answer != None and description != None and numberOfMember != None):
+          newpost = Post(owner = currentUser, title = postTitle, tool = answer, description = description, max_capacity = numberOfMember)
+          print("Check")
+          newpost.save()
+          return redirect('home')
+            
+    return render(request, "home.html")
