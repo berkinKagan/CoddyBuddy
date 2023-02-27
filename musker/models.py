@@ -6,25 +6,25 @@ from django.dispatch import receiver
 from django import forms
 
 TOOL_CHOICES = (
-    ("PYTHON", "Python"),
-    ("CSHARP", "C#"),
-    ("C", "C"),
-    ("CPP", "C++"),
-    ("JS", "JavaScript"),
-    ("PHP", "PHP"),
-    ("SWIFT", "Swift"),
-    ("JAVA", "Java"),
-    ("GO", "Go"),
-    ("RUBY", "Ruby"),
-    ("HTML", "HTML"),
-    ("CSS", "CSS"),
-    ("KOTLIN", "Kotlin"),
-    ("SCALA", "Scala"),
-    ("RUST", "Rust"),
-    ("PERL", "Perl"),
-    ("MATHLAB", "Mathlab"),
-    ("TYPESCRIPT", "TypeScript"),
-    ("R", "R"),
+    ("Python"),
+    ("C#"),
+    ("C"),
+    ("C++"),
+    ("JavaScript"),
+    ("PHP"),
+    ("Swift"),
+    ("Java"),
+    ("Go"),
+    ("Ruby"),
+    ("HTML"),
+    ("CSS"),
+    ("Kotlin"),
+    ("Scala"),
+    ("Rust"),
+    ("Perl"),
+    ("Mathlab"),
+    ("TypeScript"),
+    ("R"),
     
 
 )
@@ -54,9 +54,11 @@ class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     title = models.TextField(blank=False, max_length=1000)
     description = models.TextField(blank=False, max_length=9999999999999999999)
-    tool = models.CharField(choices=TOOL_CHOICES, max_length=10, default=None)
+    tool = models.CharField(max_length=10, default=None)
     max_capacity = models.IntegerField(blank=False, default=1)
     current_capacity = models.IntegerField(blank=False, default=1)
+    capacityRatio = models.FloatField(blank = False,default=0)
+    
     isFull = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     if(current_capacity == max_capacity):
@@ -64,5 +66,10 @@ class Post(models.Model):
     join = models.ManyToManyField(User, related_name="joined_by", symmetrical=False, blank=True)
     
     def __str__(self):
-        return self.title     
+        return self.title
+    
+    def __init__(self,*args,**kwargs):
+        super(Post, self).__init__(*args, **kwargs)
+        if self.max_capacity is not None:
+            self.capacityRatio = (self.current_capacity/self.max_capacity)*100
     

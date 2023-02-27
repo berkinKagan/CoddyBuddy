@@ -18,6 +18,7 @@ def home(request):
     currentUser = request.user
     profile = Profile.objects.get(user = currentUser)
     Posts = Post.objects.all()
+    Posts = Post.objects.order_by('-created_at')
     choices = TOOL_CHOICES
     return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices})
 
@@ -25,6 +26,8 @@ def logOut(request):
     logout(request)
     
     return redirect('logIn') 
+
+
     
 
 def logIn(request):
@@ -172,7 +175,7 @@ def createPost(request):
       numberOfMember = request.POST.get('numberOfMember')
       
       if(postTitle != None and answer != None and description != None and numberOfMember != None):
-          newpost = Post(owner = currentUser, title = postTitle, tool = answer, description = description, max_capacity = numberOfMember)
+          newpost = Post(owner = currentUser, title = postTitle, tool = answer, description = description, max_capacity = int(numberOfMember))
           print("Check")
           newpost.save()
           return redirect('home')
