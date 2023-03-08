@@ -54,7 +54,7 @@ class Post(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     title = models.TextField(blank=False, max_length=1000)
     description = models.TextField(blank=False, max_length=9999999999999999999)
-    tool = models.CharField(max_length=10, default=None)
+    tool = models.CharField(max_length=100000000, default=None)
     max_capacity = models.IntegerField(blank=False, default=1)
     current_capacity = models.IntegerField(blank=False, default=1)
     capacityRatio = models.FloatField(blank = False,default=0)

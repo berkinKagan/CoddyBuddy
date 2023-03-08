@@ -171,9 +171,28 @@ def createPost(request):
     if request.method == "POST":
       postTitle = request.POST.get('postTitle')
       answer = request.POST['tool']
+      try:
+          answer0 = request.POST['tool0']
+      except:
+          answer0 = ""
+      try:
+          answer1 = request.POST['tool1']
+      except:
+          answer1 = ""
+      try:
+          answer2 = request.POST['tool2']
+      except:
+          answer2 = ""
+      
+      try:
+          answer3 = request.POST['tool3']
+      except:
+          answer3 = ""    
+      
+      answer = answer +"\n"+ answer0+"\n"+answer1+"\n"+answer2+"\n"+answer3
       description = request.POST.get('description')
       numberOfMember = request.POST.get('numberOfMember')
-      
+      print(answer)
       if(postTitle != None and answer != None and description != None and numberOfMember != None):
           newpost = Post(owner = currentUser, title = postTitle, tool = answer, description = description, max_capacity = int(numberOfMember))
           print("Check")

@@ -139,6 +139,16 @@
       justify-content: space-between;
      }
      
+     #addTool{
+      margin-bottom: 1%;
+      width: max-content;
+      text-transform: none;
+     }
+     .addTool:hover{
+      
+      cursor: pointer;
+     }
+     
      
     </style>
   </head>
@@ -162,15 +172,16 @@
                {% csrf_token %}
                <h1>Create Post</h1>
                <div class="col-md-4 position-relative" style="flex: 1; width:100%;">
-                 <label for="validationTooltip01" class="form-label">Post Title</label>
+                 <label for="validationTooltip01" class="form-label" style="font-weight: bold;">Post Title</label>
                  <input type="text" name="postTitle" class="form-control" id="validationTooltip01" style="width: 40%;" value="" required>
                  <div class="valid-tooltip">
                    Looks good!
                  </div>
                </div>
-               <div class="col-md-4 position-relative" style="flex: 1; width:100%;">
-                  <label for="validationTooltip01" class="form-label">Main Tool</label>
-                  <select name="tool" class="form-select" aria-label="Default select example" style="width: 40%;">
+               <div id="selectPage" class="col-md-4 position-relative" style="flex: 1; width:100%;">
+                  <label for="validationTooltip01" class="form-label" style="font-weight: bold;">Tools (Max 5 tools are allowed!)</label>
+                  <a id="addTool" onclick="createTool()" class="addTool">Add Tool</a>
+                  <select id="slct" name="tool" class="form-select" aria-label="Default select example" style="width: 40%;">
                      <option selected>Open this select menu</option>
                      {% for choice in choices %}
                      <option value="{{choice}}" name="tool">{{choice}}</option>
@@ -186,7 +197,7 @@
                  </div>
                </div>
                <div class="col-md-3 position-relative" style="flex: 1; width: 40%;">
-                  <label for="customRange2" class="form-label">Number of Participants</label>
+                  <label for="customRange2" class="form-label" style="font-weight: bold;">Number of Participants</label>
                   <input name="numberOfMember"  type="range" class="form-range" min="0" max="100" id="customRange2" value="0" oninput="amount.value=customRange2.value">
                   <output id="amount" name="amount" for="customRange2"></output></div>
                   <br>
@@ -242,6 +253,8 @@
     </script>
     <script>
       document.getElementById("homeLink").style.color = "#FF416C";
+
+      var count = 0;
       
       function showElemCreate() {
          document.getElementById("create").style.display = "inline";
@@ -270,6 +283,19 @@
        }
        function updateTextInput(val) {
          document.getElementById('textInput').value=val; 
+       }
+       function createTool(){
+        if(count < 4){
+          const list = document.getElementById("slct");
+          const tool = list.cloneNode(true);
+          tool.name = "tool"+count ;
+          const para = document.getElementById("selectPage");
+          para.appendChild(tool);
+          count++;
+        }
+
+        
+          
        }
     </script>
   </body>

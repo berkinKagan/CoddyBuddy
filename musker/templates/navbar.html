@@ -80,13 +80,16 @@
               transform: scaleX(1);
               transform-origin: left;
             }
+            .navbar-brand{
+              margin-bottom: 0;
+            }
         
       </style>
 </head>
 <body>
     <nav class="navbar bg-body-emphasis fixed-top">
         <div class="container-fluid" >
-          <a class="navbar-brand" href="{% url 'home' %}" style="color: white; font-weight:bold; font: size 70%; font-family: 'Montserrat', sans-serif;">CoddyBuddy</a>
+          <p class="navbar-brand" href="{% url 'home' %}" style="color: white; font-weight:bold; font: size 70%; font-family: 'Montserrat', sans-serif;">CoddyBuddy</p>
           <div class="user">
             <img class="img" src="{{profile.image.url}}" alt="" >
             <div class="username"><h5 class="textU">{{currentUser.username}}</h5></div>
