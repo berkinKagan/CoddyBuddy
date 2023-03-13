@@ -12,8 +12,11 @@ from .models import Post, Profile, TOOL_CHOICES
 from django.http import HttpResponse
 from django.contrib.sessions.middleware import SessionMiddleware
 from django import forms
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="logIn")
 def home(request):
     currentUser = request.user
     profile = Profile.objects.get(user = currentUser)
@@ -22,6 +25,7 @@ def home(request):
     choices = TOOL_CHOICES
     return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices})
 
+@login_required(login_url="logIn")
 def logOut(request):
     logout(request)
     
@@ -87,7 +91,9 @@ def activate(request, uid, token):
         return render(request, "verify.html")
     else:
         return render(request, "verify.html")
-    
+
+
+@login_required(login_url="logIn")    
 def changePassword(request):
     currentUser = request.user
     oldPsw = currentUser.password
@@ -118,6 +124,7 @@ def changePassword(request):
                    
     return render(request, "changePassword.html", {"currentUser" : currentUser})
 
+@login_required(login_url="logIn")
 def confirmPsw(request, uid, token):
     User = get_user_model()
     try:
@@ -134,11 +141,13 @@ def confirmPsw(request, uid, token):
         return render(request, "logIn.html")
                 
 
+@login_required(login_url="logIn")
 def profile(request,pk):
     currentUser = User.objects.get(id = pk)
     profile = Profile.objects.get(user = currentUser)
     return render(request,'profile.html', {'currentUser' : currentUser, 'profile' : profile})
 
+@login_required(login_url="logIn")
 def editProfile(request):
     currentUser = request.user
     profile = Profile.objects.get(user = currentUser)
@@ -165,6 +174,7 @@ def editProfile(request):
             
     return render(request, "editProfile.html",{"currentUser" : currentUser, "message" : message, "profile" : profile})
 
+@login_required(login_url="logIn")
 def createPost(request):
     newpost = None
     currentUser = request.user
