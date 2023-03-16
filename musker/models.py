@@ -72,4 +72,11 @@ class Post(models.Model):
         super(Post, self).__init__(*args, **kwargs)
         if self.max_capacity is not None:
             self.capacityRatio = (self.current_capacity/self.max_capacity)*100
+            
+            
+class Notification(models.Model):
+    receiver = models.CharField(max_length=1000000, default=None)
+    trigger = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
+    Post = models.CharField(max_length=1000000, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
     

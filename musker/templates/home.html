@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/fab0f71904.js" crossorigin="anonymous"></script>
+    <link href="//db.onlinewebfonts.com/c/e7f249e71a563eed9c495835657eb9c2?family=Poetsen+One" rel="stylesheet" type="text/css"/>
     <style>
       body,html{
          height: 100%;
@@ -16,21 +18,23 @@
      }
      .left{
          flex: 1;
-         border-right: solid;
-         border-width: thin;
-         border-color: lightgray;
+         
          padding: 1%;
          
          
      }
      .middle{
-         flex: 4;
+         flex: 7;
          padding: 3%;
          
          
      }
      .right{
-         flex: 1;
+         flex: 4;
+         
+         margin-left: -11%;
+         padding: 1%;
+         
          
      }
      ul {
@@ -148,7 +152,26 @@
       
       cursor: pointer;
      }
-     
+     .notification{
+      display: flex;
+     }
+     .allow{
+      background-color: white;
+      border: none;
+      color: green;
+     }
+     .deny{
+      background-color: white;
+      border: none;
+      color: red;
+     }
+     .notification{
+      border: solid;
+      border-width: thin;
+      border-color: lightgrey;
+      padding: 5%;
+      border-radius: 10%;
+     }
      
     </style>
   </head>
@@ -209,34 +232,40 @@
          </div>
          <div id="home">
           {% for post in posts %}
+           <form action="{% url 'createNotification' post.title %}" method="POST">
+            {% csrf_token %}
+            <div class="post">
+              <div class="profile" style="display: flex;">
+                
+                <div style="display: flex;">
+                  
+                  <h5>{{post.owner.username}}</h5>
+                </div>
+                <p class="card-text"><small class="text-muted">Posted in {{post.created_at}}</small></p>
+              </div>
+              <div class="title"><h3>{{post.title}}</h3></div>
+              <div class="description">
+                <div class="textDes"><p>{{post.description}}</p></div>
+                <h5>Tools: </h5>
+                <ul class="toolList" style="position:relative">
+                  <li>{{post.tool}}</li>
+                </ul>
+                <h5>Member Quota: </h5>
+                <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="{{post.current_capacity}}" aria-valuemin="0" aria-valuemax="{{post.max_capacity}}">
+                  
+                  <div id="progressCal" class="progress-bar bg-success" style="width:{{post.capacityRatio}}%">{{post.current_capacity}}/{{post.max_capacity}}</div>
+                </div>
+                <br>
+                
+              </div>
+              {% if currentUser != post.owner  %}
+              <button class="join">Request to Join</button>
+              {% endif %}
+              
+              
+            </div>
+           </form>
           
-          <div class="post">
-            <div class="profile" style="display: flex;">
-              
-              <div style="display: flex;">
-                
-                <h5>{{post.owner.username}}</h5>
-              </div>
-              <p class="card-text"><small class="text-muted">Posted in {{post.created_at}}</small></p>
-            </div>
-            <div class="title"><h3>{{post.title}}</h3></div>
-            <div class="description">
-              <div class="textDes"><p>{{post.description}}</p></div>
-              <h5>Tools: </h5>
-              <ul class="toolList" style="position:relative">
-                <li>{{post.tool}}</li>
-              </ul>
-              <h5>Member Quota: </h5>
-              <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="{{post.current_capacity}}" aria-valuemin="0" aria-valuemax="{{post.max_capacity}}">
-                
-                <div id="progressCal" class="progress-bar bg-success" style="width:{{post.capacityRatio}}%">{{post.current_capacity}}/{{post.max_capacity}}</div>
-              </div>
-              <br>
-              
-            </div>
-            <button class="join">Request to Join</button>
-            
-          </div>
           <br>
           
           {% endfor %}
@@ -244,7 +273,26 @@
          </div>
          <div id="explore" style="display: none;">Explore</div>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <div style="position: fixed;">
+          <h1 style="margin-left: 3%;">Notifications</h1>
+        <br>
+        {% for notif in notifications  %}
+        <form action="" method="POST">
+          <div style="width: 100%;" class="notification">
+            <div style="flex: 3;" class="wants"><span style="font-weight: bold;"><a href="{% url 'profile' notif.trigger.id %}">{{notif.trigger.username}}</a></span> wants to attend your {{notif.Post.title}}</div>
+            <div style="flex: 1;" class="bttns">
+              <button class="allow"><i class="fa-regular fa-circle-check fa-xl"></i></button>
+              <button class="deny"><i class="fa-sharp fa-regular fa-circle-xmark fa-xl"></i></button>
+            </div>
+          </div>
+        </form>
+        {% endfor %}
+        
+        
+        </div>
+        
+      </div>
     </div>
     
     

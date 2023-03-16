@@ -8,7 +8,7 @@ from .tokens import account_activation_token, password_change_token
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
-from .models import Post, Profile, TOOL_CHOICES
+from .models import Post, Profile, TOOL_CHOICES, Notification
 from django.http import HttpResponse
 from django.contrib.sessions.middleware import SessionMiddleware
 from django import forms
@@ -23,7 +23,8 @@ def home(request):
     Posts = Post.objects.all()
     Posts = Post.objects.order_by('-created_at')
     choices = TOOL_CHOICES
-    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices})
+    notifications = Notification.objects.filter(receiver = currentUser)
+    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices, "notifications" : notifications})
 
 @login_required(login_url="logIn")
 def logOut(request):
@@ -210,3 +211,10 @@ def createPost(request):
           return redirect('home')
             
     return render(request, "home.html")
+
+def createNotification(request,pk):
+    post = Post.objects.get(title = pk)
+    currentUser = request.user
+    newNotification = Notification(receiver = post.owner, trigger = currentUser, Post = post.title)
+    newNotification.save()
+    return redirect('home')

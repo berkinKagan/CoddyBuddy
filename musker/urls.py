@@ -11,5 +11,6 @@ urlpatterns = [
     path("changePassword", views.changePassword, name="changePassword"),
     path("confirmPsw<uid>/<token>/", views.confirmPsw, name="confirmPsw"),
     path("createPost", views.createPost, name="createPost"),
+    path("createNotification/<str:pk>", views.createNotification, name="createNotification"),
     
 ]
