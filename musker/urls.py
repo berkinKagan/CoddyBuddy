@@ -12,5 +12,7 @@ urlpatterns = [
     path("confirmPsw<uid>/<token>/", views.confirmPsw, name="confirmPsw"),
     path("createPost", views.createPost, name="createPost"),
     path("createNotification/<str:pk>", views.createNotification, name="createNotification"),
+    path("joinProject/<str:pk>", views.joinProject, name="joinProject"),
+    path("deleteProject/<str:pk>", views.deleteProject, name="deleteProject"),
     
 ]

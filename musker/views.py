@@ -218,3 +218,9 @@ def createNotification(request,pk):
     newNotification = Notification(receiver = post.owner, trigger = currentUser, Post = post.title)
     newNotification.save()
     return redirect('home')
+
+def joinProject(request,pk):
+    return
+
+def deleteProject(request,pk):
+    return
