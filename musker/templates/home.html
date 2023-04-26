@@ -139,6 +139,12 @@
       color: white;
       
      }
+     .joinedAlready{
+      width: 20%;
+      border-color: gray;
+      color: gray;
+      border-width: thin;
+     }
      .profile{
       justify-content: space-between;
      }
@@ -258,9 +264,22 @@
                 <br>
                 
               </div>
-              {% if currentUser != post.owner  %}
-              <button class="join">Request to Join</button>
+              
+             
+              
+              {% with hasJoined=false %}
+              {% for userr in post.join.all %}
+              {% if userr.username == currentUser.username %}
+              {% with hasJoined=true %}
+              <button id="joinedAlready" class="joinedAlready" disabled>You already joined!</button>
+              {% endwith %}
               {% endif %}
+              {% endfor %}
+
+              {% if currentUser != post.owner and not hasJoined %}
+              <button id="join" class="join">Request to Join</button>
+              {% endif %}
+              {% endwith %}
               
               
             </div>
@@ -278,12 +297,14 @@
           <h1 style="margin-left: 3%;">Notifications</h1>
         <br>
         {% for notif in notifications  %}
-        <form action="" method="POST">
+        <form action="{% url 'joinProject' notif.textId %}" method="POST">
+          {% csrf_token %}
           <div style="width: 100%;" class="notification">
             <div style="flex: 3;" class="wants"><span style="font-weight: bold;"><a href="{% url 'profile' notif.trigger.id %}">{{notif.trigger.username}}</a></span> wants to attend your {{notif.Post.title}}</div>
             <div style="flex: 1;" class="bttns">
-              <button class="allow"><a href="{% url 'joinProject' user.id %}"><i class="fa-regular fa-circle-check fa-xl"></i></a></button>
+              <button class="allow"><a href="{% url 'joinProject' notif.textId %}"><i class="fa-regular fa-circle-check fa-xl"></i></a></button>
               <button class="deny"><a href=""><i class="fa-sharp fa-regular fa-circle-xmark fa-xl"></i></a></button>
+              {{message}}
             </div>
           </div>
         </form>

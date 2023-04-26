@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django import forms
 
+
 TOOL_CHOICES = (
     ("Python"),
     ("C#"),
@@ -38,6 +39,7 @@ class Profile(models.Model):
                                      symmetrical=False,
                                      blank=True)
     
+    
     def __str__(self):
         return self.user.username
 
@@ -58,12 +60,10 @@ class Post(models.Model):
     max_capacity = models.IntegerField(blank=False, default=1)
     current_capacity = models.IntegerField(blank=False, default=1)
     capacityRatio = models.FloatField(blank = False,default=0)
-    
     isFull = models.BooleanField(blank=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    if(current_capacity == max_capacity):
-        isFull = True
     join = models.ManyToManyField(User, related_name="joined_by", symmetrical=False, blank=True)
+    
     
     def __str__(self):
         return self.title
@@ -72,6 +72,9 @@ class Post(models.Model):
         super(Post, self).__init__(*args, **kwargs)
         if self.max_capacity is not None:
             self.capacityRatio = (self.current_capacity/self.max_capacity)*100
+            #self.current_capacity = self.join.all().count() + 1
+            if(self.current_capacity == self.max_capacity):
+                self.isFull = True
             
             
 class Notification(models.Model):
@@ -79,4 +82,5 @@ class Notification(models.Model):
     trigger = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     Post = models.CharField(max_length=1000000, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
+    textId = models.TextField(max_length=1000000, default=(str(receiver)+str(created_at)+str(trigger)))
     

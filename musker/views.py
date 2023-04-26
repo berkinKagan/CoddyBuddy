@@ -220,7 +220,19 @@ def createNotification(request,pk):
     return redirect('home')
 
 def joinProject(request,pk):
-    return
+    
+    if request.method == "POST":
+        notif = Notification.objects.get(textId = pk)
+        post = Post.objects.get(title = notif.Post)
+        applicant = notif.trigger
+        post.join.add(applicant)
+        post.current_capacity = post.join.all().count() + 1
+        post.save()
+        notif.delete()
+        return redirect('home')
+    
+    
+    return redirect('home')
 
 def deleteProject(request,pk):
     return
