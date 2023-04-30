@@ -19,12 +19,15 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url="logIn")
 def home(request):
     currentUser = request.user
+    allProfile = Profile.objects.all()
     profile = Profile.objects.get(user = currentUser)
     Posts = Post.objects.all()
+    ownPosts = Post.objects.filter(owner = currentUser)
+    ownPosts = Post.objects.order_by('-created_at')
     Posts = Post.objects.order_by('-created_at')
     choices = TOOL_CHOICES
     notifications = Notification.objects.filter(receiver = currentUser)
-    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices, "notifications" : notifications})
+    return render(request, "home.html", {"currentUser" : currentUser, "profile" : profile, "posts" : Posts, "choices" : choices, "notifications" : notifications, "ownPosts":ownPosts,"allProfile":allProfile})
 
 @login_required(login_url="logIn")
 def logOut(request):

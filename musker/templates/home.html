@@ -192,7 +192,7 @@
             <br>
             <li><a id="createLink" onclick="showElemCreate()" href="#">Create Post</a></li>
             <br>
-            <li><a id="exploreLink" onclick="showElemExplore()" href="#">Explore</a></li>
+            <li><a id="exploreLink" onclick="showElemExplore()" href="#">My Projects</a></li>
           </ul>
       </div>
       <div class="middle">
@@ -290,7 +290,78 @@
           {% endfor %}
             
          </div>
-         <div id="explore" style="display: none;">Explore</div>
+         <div id="explore" style="display: none;">
+          {% for postt in ownPosts %}
+          <div class="post">
+            <div class="profile" style="display: flex;">
+              
+              <div style="display: flex;">
+                
+                <h5>{{postt.owner.username}}</h5>
+              </div>
+              <p class="card-text"><small class="text-muted">Posted in {{postt.created_at}}</small></p>
+            </div>
+            <div class="title"><h3>{{postt.title}}</h3></div>
+            <div class="description">
+              <div class="textDes"><p>{{postt.description}}</p></div>
+              <h5>Tools: </h5>
+              <ul class="toolList" style="position:relative">
+                <li>{{postt.tool}}</li>
+              </ul>
+              <h5>Member Quota: </h5>
+              <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="{{postt.current_capacity}}" aria-valuemin="0" aria-valuemax="{{postt.max_capacity}}">
+                
+                <div id="progressCal" class="progress-bar bg-success" style="width:{{postt.capacityRatio}}%">{{postt.current_capacity}}/{{postt.max_capacity}}</div>
+                
+              </div>
+              <br>
+              <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item" >
+                  <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background: #FF416C;
+                    background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+                    background: linear-gradient(to right, #FF4B2B, #FF416C);
+                    background-repeat: no-repeat;
+                    color: white;">
+                      <p style="color: white; font-weight: bold; margin: 0px;">Participants</p>
+                    </button>
+                  </h2>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            
+                            <th scope="col">Profile Photo</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                          </tr>
+                        </thead>
+                        
+                        <tbody>
+                          {% for userr in postt.join.all %}
+                          <tr>
+                            {% for profile in allProfile %}
+                            {% if profile.user == userr %}
+                            
+                            <td><img class="" style="max-height: 12%; max-width:12%; border-radius:50px;" src="{{profile.image.url}}" class="img-fluid rounded-start" alt=""></td>
+                            <td><li><a style="text-transform: none; display:inline; text-decoration-line:none; transform:none;" id=""  href="{% url 'profile' userr.id %}">{{userr.username}}</a></li></td>
+                            <td style="padding-top: 1.6%;"><p>{{userr.email}}</p></td>
+                            {% endif %}
+                            {% endfor %}
+                          </tr>
+
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                      
+                </div>
+              </div>
+              <br>
+              
+            </div>
+          </div>
+          <br>
+          {% endfor %}
+         </div>
       </div>
       <div class="right">
         <div style="position: fixed;">
