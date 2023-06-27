@@ -34,6 +34,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to = 'profile_images', default = 'default-profile-image-png-1-Transparent-Images.png')
     bio = models.TextField(default="You add your biography", blank=True, max_length=9999999999999999999999999)
+    joinedProjects = models.IntegerField(blank=False, default=0)
+    createdProjects = models.IntegerField(blank=False, default=0)
     follows = models.ManyToManyField("self",
                                      related_name="followed_by",
                                      symmetrical=False,

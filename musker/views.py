@@ -182,6 +182,7 @@ def editProfile(request):
 def createPost(request):
     newpost = None
     currentUser = request.user
+    profile = Profile.objects.get(user = currentUser)
     if request.method == "POST":
       postTitle = request.POST.get('postTitle')
       answer = request.POST['tool']
@@ -209,10 +210,14 @@ def createPost(request):
       print(answer)
       if(postTitle != None and answer != None and description != None and numberOfMember != None):
           newpost = Post(owner = currentUser, title = postTitle, tool = answer, description = description, max_capacity = int(numberOfMember))
-          print("Check")
+          #print("Check")
           newpost.save()
+          
+          profile.createdProjects = Post.objects.filter(owner = currentUser).count()
+          profile.save()
           return redirect('home')
-            
+    profile.createdProjects = Post.objects.filter(owner = currentUser).count()
+    profile.save()     
     return render(request, "home.html")
 
 def createNotification(request,pk):
@@ -228,6 +233,9 @@ def joinProject(request,pk):
         notif = Notification.objects.get(textId = pk)
         post = Post.objects.get(title = notif.Post)
         applicant = notif.trigger
+        profile = Profile.objects.get(user = applicant)
+        profile.joinedProjects = profile.joinedProjects + 1
+        profile.save()
         post.join.add(applicant)
         post.current_capacity = post.join.all().count() + 1
         post.save()
